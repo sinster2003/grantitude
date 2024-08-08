@@ -4,6 +4,7 @@ import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Meteors } from "./ui/meteors";
+import Prcards from "./Prcards";
 
 const Repositories = () => {
   const [repos, setRepos] = useState([]);
@@ -49,6 +50,7 @@ const Repositories = () => {
             })
         }
         </div>
+        <Prcards/>
     </div>
   )
 }
