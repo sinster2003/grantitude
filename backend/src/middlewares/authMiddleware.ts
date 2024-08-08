@@ -4,10 +4,17 @@ import { JWT_SECRET } from "../utils/config";
 import { AccessRequest } from "../types";
 
 const authMiddleware = (req: AccessRequest, res: Response, next: NextFunction) => {
-    console.log("Cookies", req.cookies)
-    const { JwtToken } = req.cookies;
+    const token = req.headers["authorization"];
+    console.log(token?.[0]);
+    console.log(JWT_SECRET)
+
+    if(!token) {
+        return res.status(400).json({
+            message: "Authorization token unavailable. Please Login"
+        })
+    }
     
-    const { access_token } = jwt.verify(JwtToken, JWT_SECRET as string) as JwtPayload;
+    const { access_token } = jwt.verify(token, JWT_SECRET as jwt.Secret) as JwtPayload;
 
     if(access_token) {
         req.access_token = access_token;

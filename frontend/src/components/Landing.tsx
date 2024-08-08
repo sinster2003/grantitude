@@ -5,26 +5,29 @@ import { ContainerScroll } from "./ui/container-scroll-animation";
 import { useState } from "react";
 
 const Landing = () => {
-const [currentWalletAddress, setCurrentWalletAddress] = useState("")
+  const [currentWalletAddress, setCurrentWalletAddress] = useState("")
 
-async function connectWallet(){
-  //check whether metamask exists
-  if(window.ethereum){
-    console.log("Meta mask detected")
-    try{
-      const accounts = await window.ethereum.request({
-        method:"eth_requestAccounts"
-      })
-      console.log(accounts)
-      setCurrentWalletAddress(accounts[0])
-    }catch(error){
-      console.log(error)
+  async function connectWallet(){
+    //check whether metamask exists
+    //@ts-ignore
+    if(window.ethereum){
+      console.log("Meta mask detected")
+      try{
+        //@ts-ignore
+        const accounts = await window.ethereum.request({
+          method:"eth_requestAccounts"
+        })
+        console.log(accounts)
+        setCurrentWalletAddress(accounts[0])
+      }catch(error){
+        console.log(error)
+      }
+    }
+    else{
+      console.log("Metamask wallet not found")
     }
   }
-  else{
-    console.log("Metamask wallet not found")
-  }
-}
+
   return (
     <>
     <Navbar/>

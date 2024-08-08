@@ -21,20 +21,17 @@ const githubAuth = async (req: Request, res: Response) => {
                 }
             }
         )
-        console.log(response)
 
         const codeToAccessToken = await response.data;
-        console.log(codeToAccessToken);
         const access_token = codeToAccessToken.access_token;
-        console.log(access_token);
 
         // generate jwt session with access_token as payload
         if(access_token) {
-            generateJwtToken(access_token, res);
-            return res.status(200).json({ message: "Authentication Successful" });
+            const token = generateJwtToken(access_token, res);
+            return res.status(200).json({ message: "Authentication Successful", token });
         }
         else {
-            return res.status(403).json({ message: "Authentication failed" });
+            return res.status(403).json({ message: "Authentication Failure" });
         }
     }
     catch(error) {

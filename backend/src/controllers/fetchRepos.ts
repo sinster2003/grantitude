@@ -13,7 +13,10 @@ const fetchRepos = async (req: AccessRequest, res: Response) => {
             },
         });
 
+        console.log(reposResult);
+
         const repos = await reposResult.data;
+        console.log(repos);
         res.status(200).json(repos);
     } 
     catch (error) {
