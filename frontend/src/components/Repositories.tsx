@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PinContainer } from "./ui/3d-pin";
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import axios from "axios";
+import Prcards from "./Prcards";
 
 const Repositories = () => {
   const [repos, setRepos] = useState([]);
@@ -38,6 +39,8 @@ const Repositories = () => {
 
             }
         </BentoGrid>
+        <p className="text-white">pr cards shift to each repo pr after clicking on repo card</p>
+        <Prcards/>
     </div>
   )
 }
