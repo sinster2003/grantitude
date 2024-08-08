@@ -2,36 +2,13 @@ import Navbar from "./Navbar";
 import { Button } from "./ui/moving-border";
 import { SparklesCore } from "./ui/sparkles";
 import { ContainerScroll } from "./ui/container-scroll-animation";
-import { useState } from "react";
+import Footer from "./Footer";
 
 const Landing = () => {
-  const [currentWalletAddress, setCurrentWalletAddress] = useState("")
-
-  async function connectWallet(){
-    //check whether metamask exists
-    //@ts-ignore
-    if(window.ethereum){
-      console.log("Meta mask detected")
-      try{
-        //@ts-ignore
-        const accounts = await window.ethereum.request({
-          method:"eth_requestAccounts"
-        })
-        console.log(accounts)
-        setCurrentWalletAddress(accounts[0])
-      }catch(error){
-        console.log(error)
-      }
-    }
-    else{
-      console.log("Metamask wallet not found")
-    }
-  }
-
   return (
     <>
     <Navbar/>
-    <div className="w-full h-full bg-black flex justify-center items-center flex-col">
+    <div className="w-full h-full bg-black flex justify-center items-center flex-col pb-20">
     <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
       <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
         Grantitude
@@ -62,9 +39,9 @@ const Landing = () => {
         titleComponent={
           <>
             <h1 className="text-4xl font-semibold text-black dark:text-white">
-              Unleash the power of <br />
+            Fuel innovation and recognize <br />
               <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                Scroll Animations
+                Open source contributions
               </span>
             </h1>
           </>
@@ -82,15 +59,15 @@ const Landing = () => {
     </div>
       <p className="text-5xl text-white pt-6">Reward open source contributions with EASE.</p>
       <p className="text-2xl text-slate-600 pt-5">Connect your Github account and reward the contributors.</p>
-      <div className="mt-6" onClick={connectWallet} ><Button 
+      <div className="mt-6"><Button 
     borderRadius="1.75rem"
     className="bg-white dark:bg-transparent text-black dark:text-white border-neutral-200 dark:border-slate-800"
   >
-    Login to Github for now connect wallet
+    Login to Github
   </Button> 
-  </div>
-  <p className="text-white">ur wallet address is {currentWalletAddress}</p>
+  </div>  
     </div>
+    <Footer/>
     </>
   )
 }

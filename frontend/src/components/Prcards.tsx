@@ -13,9 +13,33 @@ import {
   } from "./ui/animated-modal";
   import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";  
   import { motion } from "framer-motion";
+  import { useState } from "react";
 
 const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
-    const placeholders = [
+  const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
+
+  async function connectWallet(){
+    //check whether metamask exists
+    //@ts-ignore
+    if(window.ethereum){
+      console.log("Meta mask detected")
+      try{
+        //@ts-ignore
+        const accounts = await window.ethereum.request({
+          method:"eth_requestAccounts"
+        })
+        console.log(accounts)
+        setCurrentWalletAddress(accounts[0])
+      }catch(error){
+        console.log(error)
+      }
+    }
+    else{
+      console.log("Metamask wallet not found")
+    }
+  }
+  
+  const placeholders = [
         "Set the bounty value for each pull request",
         "Encourage open source contributors",
         "Fuel innovation and excellence",
@@ -89,7 +113,7 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
                 >
                   <img
                     src={image}
-                    alt="bali images"
+                    alt="bounty images"
                     width="500"
                     height="500"
                     className="rounded-lg h-20 w-20 md:h-40 md:w-40 object-cover flex-shrink-0"
@@ -105,12 +129,13 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
         onSubmit={onSubmit}
       />
             </div>
+            <p className='text-white text-center'>The wallet address is : {currentWalletAddress}</p>
           </ModalContent>
           <ModalFooter className="gap-4">
             <button className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28">
               Later,not now!
             </button>
-            <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
+            <button onClick={connectWallet} className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
               Connect Wallet
             </button>
           </ModalFooter>

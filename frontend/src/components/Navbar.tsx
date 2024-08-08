@@ -1,5 +1,3 @@
-
-
 const Navbar = () => {
   const handleGithubLogin = () => {
     const clientID = import.meta.env.VITE_APP_CLIENT_ID;
@@ -10,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div className='w-full h-20 bg-black pl-40 pr-40 pt-10 pb-5 flex items-center justify-between'>
-      <p className='text-white text-xl'>Grantitude</p>
+      <img width="50" height="50" src="/logo.png" alt="pull-request"/>
       <div>
         <button className="p-[3px] relative" onClick={handleGithubLogin}>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-900 rounded-lg" />
