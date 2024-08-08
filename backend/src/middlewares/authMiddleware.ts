@@ -4,9 +4,10 @@ import { JWT_SECRET } from "../utils/config";
 import { AccessRequest } from "../types";
 
 const authMiddleware = (req: AccessRequest, res: Response, next: NextFunction) => {
-    const { token } = req.cookies;
+    console.log("Cookies", req.cookies)
+    const { JwtToken } = req.cookies;
     
-    const { access_token } = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
+    const { access_token } = jwt.verify(JwtToken, JWT_SECRET as string) as JwtPayload;
 
     if(access_token) {
         req.access_token = access_token;

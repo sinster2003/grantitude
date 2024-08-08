@@ -2,12 +2,19 @@ import express from "express";
 import cors from "cors";
 import githubRouter from "./routes/githubRouter";
 import errorHandler from "./middlewares/errorHandler";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(cors());
+const corsConfig = {
+    origin: "http://localhost:5173",
+    credentials: true
+}
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use("/api/github", githubRouter);
 

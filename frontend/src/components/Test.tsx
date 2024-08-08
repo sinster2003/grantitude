@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Test = () => {
-  const [repos, setRepos] = useState<any>([]);
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
@@ -22,7 +20,6 @@ const Test = () => {
 
         const result = await response.json();
         console.log(result);
-        setRepos(result);
       } catch (error) {
         console.log(error);
       }
@@ -43,9 +40,6 @@ const Test = () => {
   return (
     <div>
       <button onClick={handleGithubLogin}>Github Login</button>
-      {repos.length > 0 && repos?.map((repo: any) => (
-        <p key={repo.id}>{repo.name}</p>
-      ))}
     </div>
   );
 };
