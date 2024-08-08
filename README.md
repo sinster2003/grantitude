@@ -19,7 +19,7 @@ Our solution is built using the following technologies:
 - Ethereum Blockchain: To ensure transparency, security, and decentralization of the bounty distribution process.
 - Ethers.js: A library for interacting with the Ethereum blockchain from our frontend application.
 - React.js: For building a responsive and interactive user interface.
-- Aeternity UI: For styling the frontend application and ensuring a great user experience.
+- Aceternity UI: For styling the frontend application and ensuring a great user experience.
 - GitHub API: To interact with GitHub repositories, pull requests, and user data.
 - Express.js: For building a robust backend server to handle API requests and business logic.
 
