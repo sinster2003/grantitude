@@ -4,9 +4,7 @@ import { JWT_SECRET } from "./config";
 
 const generateJwtToken = (access_token: string, res: Response) => {
     const token = jwt.sign({ access_token }, JWT_SECRET as string);
-    res.cookie("JwtToken", token, {
-        maxAge: 24 * 60 * 60 * 1000,
-    });
+    return token;
 }
 
 export default generateJwtToken;
