@@ -14,7 +14,7 @@ import {
   import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";  
   import { motion } from "framer-motion";
 
-const Prcards = () => {
+const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
     const placeholders = [
         "Set the bounty value for each pull request",
         "Encourage open source contributors",
@@ -39,23 +39,17 @@ const Prcards = () => {
     "https://images.unsplash.com/photo-1518107616985-bd48230d3b20?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGdpdGh1YnxlbnwwfHwwfHx8MA%3D%3D",
   ];
   return (
-    <div className="flex py-20 items-center justify-center antialiased">
-      <GlowingStarsBackgroundCard>
-        <GlowingStarsTitle>contributor-username</GlowingStarsTitle>
-        <div className="flex justify-between items-end">
+    <div className="flex flex-col py-20 items-center justify-center antialiased">
+      <GlowingStarsBackgroundCard className='min-w-[480px]'>
+        <GlowingStarsTitle>{username}</GlowingStarsTitle>
+        <div className="flex justify-between items-center">
           <GlowingStarsDescription>
-            contributor bio
+            {bio}
           </GlowingStarsDescription>
-          <div className='flex gap-3 items-center'>
-            <p>Add bounty</p>
-            <div className="h-8 w-8 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center">
-            <Icon />
-          </div>
-          </div>
-
+          <img src={userImg} alt={username} className='rounded-full w-10 h-10'/>
         </div>
       </GlowingStarsBackgroundCard>
-      <div className="py-40  flex items-center justify-center">
+      <div className="py-4 flex items-center justify-center">
       <Modal>
         <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
           <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
@@ -125,26 +119,6 @@ const Prcards = () => {
     </div>
     </div>
   );
-}
-
-const Icon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      className="h-4 w-4 text-white stroke-2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-      />
-    </svg>
-  );
-
 }
 
 export default Prcards
