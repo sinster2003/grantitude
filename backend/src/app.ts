@@ -6,7 +6,7 @@ import errorHandler from "./middlewares/errorHandler";
 const app = express();
 
 const corsConfig = {
-    origin: "http://localhost:5173",
+    origin: "https://grantitude-github.vercel.app",
     credentials: true
 }
 
