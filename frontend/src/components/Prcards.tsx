@@ -1,4 +1,7 @@
 import React from 'react'
+import { ethers } from "ethers";
+import { BrowserProvider, parseUnits } from "ethers";
+import abi from "../../Bounty.json"
 import {
     GlowingStarsBackgroundCard,
     GlowingStarsDescription,
@@ -17,7 +20,20 @@ import {
 
 const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
-
+  
+  async function makeTransaction(){
+    if(!window.ethereum){
+      console.log("Wallet not connected, please install metamask");
+  }
+  else{
+    
+    const provider = new BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const bountyContract = new ethers.Contract(process.env.CONTRACT_ADDRESS_DEPLOYED, abi.abi, provider);
+    const data = await bountyContract.owner()
+    console.log(data)
+  }
+}
   async function connectWallet(){
     //check whether metamask exists
     //@ts-ignore
@@ -126,7 +142,7 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
             <PlaceholdersAndVanishInput
         placeholders={placeholders}
         onChange={handleChange}
-        onSubmit={onSubmit}
+        onSubmit={makeTransaction}
       />
             </div>
             <p className='text-white text-center'>The wallet address is : {currentWalletAddress}</p>

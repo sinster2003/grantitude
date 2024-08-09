@@ -1,5 +1,7 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import dotenv from "dotenv"
+dotenv.config();
 
 // lists the address and balance in the ethereum network
 task("accounts", "List of all accounts and balances", async (taskArgs, hre) => {
@@ -13,10 +15,30 @@ task("accounts", "List of all accounts and balances", async (taskArgs, hre) => {
 });
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.24",
+  defaultNetwork: "sepolia",
   networks: {
-    hardhat: {}
-  }
-};
+    hardhat: {
+    },
+    sepolia: {
+      url: process.env.ALCHEMY_API_ENDPOINT,
+      accounts: [process.env.ETH_PRIVATE_KEY as string]
+    }
+  },
+  solidity: {
+    version: "0.8.0",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
+  },
+ };
 
 export default config;
