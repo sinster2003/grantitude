@@ -16,7 +16,7 @@ const Prlist = () => {
     toast.error("Ensure the contributor has his/her wallet public address in their github bio.", {
         duration: 3000
     });
-    
+
     const getPrs = async () => {
         try {
             const response = await axios.get(`https://grantitude-backend.onrender.com/api/github/repos/${owner}/${name}`, {
@@ -40,9 +40,9 @@ const Prlist = () => {
 
   if(length !== null && length === 0) {
     return <div className="flex w-full h-screen justify-center items-center">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col justify-center items-center gap-5">
             <img src="/404.svg" alt="No pull requests found" width="400px"/>
-            <p>No pull requests found on {name}</p>
+            <p className="text-lg">No pull requests found on {name}</p>
         </div>
     </div>
   }
