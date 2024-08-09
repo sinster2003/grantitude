@@ -3,26 +3,28 @@ import { ethers, parseEther } from "ethers";
 import { BrowserProvider } from "ethers";
 import abi from "../../Bounty.json"
 import {
-    GlowingStarsBackgroundCard,
-    GlowingStarsDescription,
-    GlowingStarsTitle,
-  } from "./ui/glowing-stars";
-  import {
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalTrigger,
-  } from "./ui/animated-modal";
-  import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";  
-  import { motion } from "framer-motion";
-  import { useState } from "react";
+  GlowingStarsBackgroundCard,
+  GlowingStarsDescription,
+  GlowingStarsTitle,
+} from "./ui/glowing-stars";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalTrigger,
+} from "./ui/animated-modal";
+import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";  
+import { motion } from "framer-motion";
+import { useState } from "react";
+import axios from 'axios';
 
 const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
   const [inputValue, setInputValue] = useState("");
 
-  async function makeTransaction(){
+  async function makeTransaction()
+  {
     //@ts-ignore
     if(!window.ethereum){
       console.log("Wallet not connected, please install metamask");
@@ -33,10 +35,13 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
         const provider = new BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const bountyContract = new ethers.Contract(import.meta.env.VITE_APP_CONTRACT_ADDRESS_DEPLOYED, abi.abi, signer);
-        const data = await bountyContract.owner()
-        console.log(data)
+        const contributorAddress = await axios.get(`http://localhost:8080/api/github/users/${username}`, {
+          headers: {
+            Authorization: JSON.parse(localStorage.getItem("token") as string)
+          }
+        });
 
-        const tx = await bountyContract.awardBounty(data, {
+        const tx = await bountyContract.awardBounty(contributorAddress.data, {
           value: parseEther(inputValue)
         })
         await tx.wait();
@@ -70,29 +75,25 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
   }
   
   const placeholders = [
-        "Set the bounty value for each pull request",
-        "Encourage open source contributors",
-        "Fuel innovation and excellence",
-        "Seamlessly send ETH to contributors",
-        "Recognize developers across globe",
-      ];
+    "Set the bounty value for each pull request",
+    "Encourage open source contributors",
+    "Fuel innovation and excellence",
+    "Seamlessly send ETH to contributors",
+    "Recognize developers across globe",
+  ];
 
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
-      };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }; 
 
-      const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("submitted");
-      };
-
-     const images = [
-        "https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvbnRyaWJ1dGlvbnMlMjBvbiUyMGdpdGh1YiUyMGNvZGV8ZW58MHx8MHx8fDA%3D",
+  const images = [
+    "https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvbnRyaWJ1dGlvbnMlMjBvbiUyMGdpdGh1YiUyMGNvZGV8ZW58MHx8MHx8fDA%3D",
     "https://images.unsplash.com/photo-1649274496773-c40eacd66e2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZXRoZXJldW0lMjBjb2lufGVufDB8fDB8fHww",
     "https://images.unsplash.com/photo-1666625519702-7270420bb4f9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGV0aGVyZXVtJTIwd2FsbGV0fGVufDB8fDB8fHww",
     "https://images.unsplash.com/photo-1618401479427-c8ef9465fbe1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z2l0aHViJTIwYm91bnR5fGVufDB8fDB8fHww",
     "https://images.unsplash.com/photo-1518107616985-bd48230d3b20?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGdpdGh1YnxlbnwwfHwwfHx8MA%3D%3D",
   ];
+
   return (
     <div className="flex flex-col py-20 items-center justify-center antialiased">
       <GlowingStarsBackgroundCard className='min-w-[480px]'>
