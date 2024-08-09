@@ -3,9 +3,14 @@ import { PinContainer } from "./ui/3d-pin";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Meteors } from "./ui/meteors";
+import { Pagination, PaginationContent } from "./ui/pagination";
+import { Button } from "./ui/button";
 
 const Repositories = () => {
   const [repos, setRepos] = useState([]);
+  const [pagination, setPagination] = useState<number[]>([]);
+  const [filteredRepos, setFilteredRepos] = useState([]);
+  const [pageNo, setPageNo] = useState(1);
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -18,7 +23,8 @@ const Repositories = () => {
             });
             const repos = await response.data;
             setRepos(repos);
-            navigation("/dashboard")
+            setFilteredRepos(repos.slice(0,6));
+            navigation("/dashboard");
         }
         catch(error) {
             console.log(error);
@@ -28,14 +34,44 @@ const Repositories = () => {
     getRepos();
   }, []);
 
+  useEffect(() => {
+    const pages = [];
+    for(let i = 1; i <= Math.ceil(repos?.length / 6); i++) {
+        pages.push(i);
+    }
+    setPagination(pages);
+  }, [repos]);
+
+  const handlePagination = (pageNo: number) => {
+    setPageNo(pageNo);
+    setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
+  }
+
+  if(!repos || repos?.length <= 0) {
+    return <div className="flex w-full h-screen justify-center items-center">
+        <img src="/loader.gif" alt="loading"/>
+    </div>
+  }
+
   return (
-    <div className="">
-        <div className="p-10">
+    <div>
+        <div className="flex flex-col gap-10 pt-[60px] px-10 pb-10">
             <h1 className="text-2xl text-center">Repositories</h1>
         </div>
-        <div className="flex flex-wrap justify-center gap-20 py-20">
+
+        <div className="py-10">
+            <Pagination>
+                <PaginationContent>
+                    <div className="flex flex-wrap gap-4">
+                        {pagination?.map((page: number) => <Button key={page} className={`text-neutral-900 gap-5 hover:bg-gray-400 cursor-pointer ${ page === pageNo ? "bg-gray-400" : "bg-white" }`} onClick={() => {handlePagination(page)}}>{page}</Button>)}
+                    </div>
+                </PaginationContent>
+            </Pagination>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-20 pt-10 py-20">
         {
-            repos?.length > 0 && repos?.map((repo: any) => {
+            filteredRepos?.length > 0 && filteredRepos?.map((repo: any) => {
                 return <PinContainer key={repo.id} title={repo.name} href={`/dashboard/${repo.owner.login}/${repo.name}/pulls`}>
                     <div className="flex flex-col rounded-2xl h-[20rem] w-[20rem] p-10">
                         <p>{repo.name}</p>
@@ -46,6 +82,8 @@ const Repositories = () => {
             })
         }
         </div>
+
+
     </div>
   )
 }

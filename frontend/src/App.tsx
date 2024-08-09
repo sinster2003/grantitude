@@ -3,6 +3,7 @@ import './App.css'
 import { Dashboard, Landing, Layout, Repositories } from './components'
 import Prlist from './components/Prlist'
 import { useAuth } from './components/Layout';
+import Component404 from './components/Component404';
 
 function App() {
   const auth = useAuth();
@@ -16,6 +17,7 @@ function App() {
             <Route path='/' element={<Landing/>}/>
             <Route path='/dashboard' element={<Dashboard><Repositories/></Dashboard>}/>
             <Route path='/dashboard/:owner/:name/pulls' element={<Dashboard><Prlist/></Dashboard>}/>
+            <Route path='*' element={<Dashboard><Component404/></Dashboard>} />
           </Routes>
       </BrowserRouter>
       </Layout>

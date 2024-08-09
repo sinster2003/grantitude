@@ -25,7 +25,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     if(!code && !auth?.authStatus) {
       navigation("/");
     }
-    
+
     const postCode = async () => {
       try {
         const response = await fetch(
@@ -55,7 +55,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if(code && authStatus === null) {
-    return <p>Loading...</p>
+    return <div className="flex w-full h-screen justify-center items-center">
+      <img src="/loader.gif" alt="loading"/>
+    </div>
   }
 
   if(code && authStatus === "Failure") {

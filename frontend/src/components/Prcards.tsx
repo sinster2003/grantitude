@@ -96,7 +96,7 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
   ];
 
   return (
-    <div className="flex flex-col py-20 items-center justify-center antialiased">
+    <div className="flex flex-col py-10 items-center justify-center antialiased">
       <Link to={prUrl} target='_blank'>
       <GlowingStarsBackgroundCard className='min-w-[480px]'>
         <GlowingStarsTitle>{`${username} #${number}`}</GlowingStarsTitle>
