@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar"
 import { Folders, SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
+import { useAuth } from "./Layout";
+import { useNavigate } from "react-router-dom";
 
 const links = [
   {
@@ -15,8 +17,15 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const [authStatus, setAuthStatus] = useState(null);
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
+  const auth = useAuth();
+  const navigation = useNavigate();
+  console.log(auth);
 
   useEffect(() => {
+    if(!code && !auth?.authStatus) {
+      navigation("/");
+    }
+    
     const postCode = async () => {
       try {
         const response = await fetch(
@@ -33,6 +42,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         const result = await response.json();
         setAuthStatus(result?.message?.split(" ")[1]);
         localStorage.setItem("token", JSON.stringify(result.token));
+        auth?.setAuthStatus(result.token);
       } 
       catch (error) {
         console.log(error);
@@ -52,7 +62,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     return <p>Auth Failed</p>
   }
 
-  if((code && authStatus === "Successful") || !code) {
+  if((code && authStatus === "Successful") || (!code && auth?.authStatus)) {
     return (
       <div className="flex min-h-screen w-full text-white bg-neutral-800">
         <Sidebar open={open} setOpen={setOpen} animate={true}>

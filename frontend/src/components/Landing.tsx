@@ -4,8 +4,12 @@ import { SparklesCore } from "./ui/sparkles";
 import { ContainerScroll } from "./ui/container-scroll-animation";
 import Footer from "./Footer";
 import handleGithubLogin from "../utils/handleGithubLogin";
+import { useAuth } from "./Layout";
+import handleLogout from "../utils/handleLogout";
 
 const Landing = () => {
+  const auth = useAuth();
+
   return (
     <>
     <Navbar/>
@@ -63,10 +67,10 @@ const Landing = () => {
       <div className="mt-6"><Button 
     borderRadius="1.75rem"
     className="bg-white dark:bg-transparent text-black dark:text-white border-neutral-200 dark:border-slate-800"
-    onClick={handleGithubLogin}
+    onClick={(!auth?.authStatus) ? handleGithubLogin : () => { handleLogout(); auth?.setAuthStatus(null); }}
   >
-    Login to Github
-  </Button> 
+    {!auth?.authStatus ? "Login to Github" : "Logout"}
+  </Button>
   </div>  
     </div>
     <Footer/>
