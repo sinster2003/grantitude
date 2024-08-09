@@ -20,7 +20,8 @@ const fetchRepos = async (req: AccessRequest, res: Response) => {
         res.status(200).json(repos);
     } 
     catch (error) {
-        res.status(200).json({
+        console.log(error);
+        res.status(500).json({
             message: "Something went wrong",
         });
     }

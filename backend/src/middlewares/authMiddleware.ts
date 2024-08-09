@@ -5,8 +5,9 @@ import { AccessRequest } from "../types";
 
 const authMiddleware = (req: AccessRequest, res: Response, next: NextFunction) => {
     const token = req.headers["authorization"];
-    console.log(token?.[0]);
-    console.log(JWT_SECRET)
+    console.log(token);
+    console.log(JWT_SECRET);
+    console.log(req);
 
     if(!token) {
         return res.status(400).json({
