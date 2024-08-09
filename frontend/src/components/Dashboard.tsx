@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar"
-import { Folders, SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
+import { Folders, HomeIcon, SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
 import { useAuth } from "./Layout";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,12 @@ const links = [
     label: "Repositories",
     href: "/dashboard/",
     icon: <div><Folders/></div>
-  }
+  },
+  {
+    label:"Home",
+    href:"/",
+    icon:<div><HomeIcon/></div>
+  }
 ]
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
@@ -23,6 +28,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if(!code && !auth?.authStatus) {
+      console.log("Please login to access the dashboard")
       navigation("/");
     }
 

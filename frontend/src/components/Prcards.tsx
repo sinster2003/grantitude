@@ -25,8 +25,12 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
   const [inputValue, setInputValue] = useState("");
 
   async function makeTransaction()
-  {
-    //@ts-ignore
+  { // input validations
+    if(Number(inputValue) === NaN){
+      console.log("Invalid bounty value, its should be in ETH.(Eg:0.01)")
+    }
+    else{
+      //@ts-ignore
     if(!window.ethereum){
       console.log("Wallet not connected, please install metamask");
     }
@@ -42,16 +46,26 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
           }
         });
 
-        const tx = await bountyContract.awardBounty(contributorAddress.data, {
-          value: parseEther(inputValue)
+        const balance = await window.ethereum.request({
+          method:"eth_getBalance"
         })
-        await tx.wait();
-        console.log("Transaction added");
+
+        if(parseEther(balance) < parseEther(inputValue)){
+          console.log("Insufficient funds, change account and try again")
+        }
+        else{
+          const tx = await bountyContract.awardBounty(contributorAddress.data, {
+            value: parseEther(inputValue)
+          })
+          await tx.wait();
+          console.log("Transaction added");
+        }        
       }
       catch(error) {
         console.log(error);
       }
     }
+    }    
   }
 
   async function connectWallet(){
@@ -81,6 +95,7 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
     "Fuel innovation and excellence",
     "Seamlessly send ETH to contributors",
     "Recognize developers across globe",
+    "Set the value in ETH (Eg:0.01)",
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
