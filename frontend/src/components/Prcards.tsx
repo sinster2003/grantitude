@@ -28,10 +28,6 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
 
   async function makeTransaction()
   { // input validations
-    toast.error("Ensure the contributor has his/her wallet public address in their github bio.", {
-      duration: 3000
-    })
-
     if(Number.isNaN(Number(inputValue))){
       toast.error("Invalid bounty value, its should be in ETH.(Eg:0.01)")
     }

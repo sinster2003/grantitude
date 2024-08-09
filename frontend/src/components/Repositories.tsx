@@ -51,7 +51,7 @@ const Repositories = () => {
     setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
   }
 
-  if(length && length === 0) {
+  if(length !== null && length === 0) {
     return <div className="flex w-full h-screen justify-center items-center">
         <div className="flex flex-col gap-5">
             <img src="/404.svg" alt="No pull requests found" width="400px"/>

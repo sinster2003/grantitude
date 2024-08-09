@@ -13,6 +13,10 @@ const Prlist = () => {
   const [length, setLength] = useState(null);
   
   useEffect(() => {
+    toast.error("Ensure the contributor has his/her wallet public address in their github bio.", {
+        duration: 3000
+    });
+    
     const getPrs = async () => {
         try {
             const response = await axios.get(`https://grantitude-backend.onrender.com/api/github/repos/${owner}/${name}`, {
@@ -34,7 +38,7 @@ const Prlist = () => {
     getPrs();
   }, []);
 
-  if(length && length === 0) {
+  if(length !== null && length === 0) {
     return <div className="flex w-full h-screen justify-center items-center">
         <div className="flex flex-col gap-5">
             <img src="/404.svg" alt="No pull requests found" width="400px"/>
