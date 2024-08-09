@@ -17,7 +17,7 @@ const Repositories = () => {
   useEffect(() => {
     const getRepos = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}/api/github/repos`, {
+            const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}/repos`, {
                 headers: {
                     "Authorization": JSON.parse(localStorage.getItem("token") as string)
                 }
