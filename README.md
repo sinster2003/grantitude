@@ -1,3 +1,5 @@
+Note: To make use of the application, the contributor who recieves the bounty must add his/her metamask address in their github bio.
+
 # GitHub Bounty Dispenser - Grantitude
 
 ## **Problem Statement**
