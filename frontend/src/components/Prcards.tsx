@@ -43,7 +43,7 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
           const provider = new BrowserProvider(window.ethereum);
           const signer = await provider.getSigner();
           const bountyContract = new ethers.Contract(import.meta.env.VITE_APP_CONTRACT_ADDRESS_DEPLOYED, abi.abi, signer);
-          const contributorAddress = await axios.get(`http://localhost:8080/api/github/users/${username}`, {
+          const contributorAddress = await axios.get(`https://grantitude-backend.onrender.com/api/github/users/${username}`, {
             headers: {
               Authorization: JSON.parse(localStorage.getItem("token") as string)
             }

@@ -35,7 +35,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     const postCode = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/github/auth/callback",
+          "https://grantitude-backend.onrender.com/api/github/auth/callback",
           {
             method: "POST",
             headers: {
