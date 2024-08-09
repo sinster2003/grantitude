@@ -10,6 +10,7 @@ const Prlist = () => {
   const [prs, setPrs] = useState([]);
   const [filteredPrs, setFilteredPrs] = useState(prs);
   const [buttonStatus, setButtonStatus] = useState("All");
+  const [length, setLength] = useState(null);
   
   useEffect(() => {
     const getPrs = async () => {
@@ -22,6 +23,7 @@ const Prlist = () => {
             const result = await response.data;
             setPrs(result.prs);
             setFilteredPrs(result.prs);
+            setLength(result.prs.length);
         }
         catch(error) {
             toast.error("Something went wrong")
@@ -31,6 +33,15 @@ const Prlist = () => {
 
     getPrs();
   }, []);
+
+  if(length && length === 0) {
+    return <div className="flex w-full h-screen justify-center items-center">
+        <div className="flex flex-col gap-5">
+            <img src="/404.svg" alt="No pull requests found" width="400px"/>
+            <p>No pull requests found on {name}</p>
+        </div>
+    </div>
+  }
 
   if(!prs || prs?.length <= 0) {
     return <div className="flex w-full h-screen justify-center items-center">

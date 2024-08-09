@@ -11,6 +11,7 @@ const Repositories = () => {
   const [repos, setRepos] = useState([]);
   const [pagination, setPagination] = useState<number[]>([]);
   const [filteredRepos, setFilteredRepos] = useState([]);
+  const [length, setLength] = useState(null);
   const [pageNo, setPageNo] = useState(1);
   const navigation = useNavigate();
 
@@ -25,6 +26,7 @@ const Repositories = () => {
             const repos = await response.data;
             setRepos(repos);
             setFilteredRepos(repos.slice(0,6));
+            setLength(repos.length);
             navigation("/dashboard");
         }
         catch(error) {
@@ -47,6 +49,15 @@ const Repositories = () => {
   const handlePagination = (pageNo: number) => {
     setPageNo(pageNo);
     setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
+  }
+
+  if(length && length === 0) {
+    return <div className="flex w-full h-screen justify-center items-center">
+        <div className="flex flex-col gap-5">
+            <img src="/404.svg" alt="No pull requests found" width="400px"/>
+            <p>No repos found here.</p>
+        </div>
+    </div>
   }
 
   if(!repos || repos?.length <= 0) {

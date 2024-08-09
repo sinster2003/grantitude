@@ -28,6 +28,10 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
 
   async function makeTransaction()
   { // input validations
+    toast.error("Ensure the contributor has his/her wallet public address in their github bio.", {
+      duration: 3000
+    })
+
     if(Number.isNaN(Number(inputValue))){
       toast.error("Invalid bounty value, its should be in ETH.(Eg:0.01)")
     }
@@ -63,7 +67,7 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
             if(toastLoadingId) { toast.dismiss(toastLoadingId) }
           }
           else {
-            toast.error("Something went wrong")
+            toast.error("Something went wrong! Maybe github bio doesn't have a metamask address.")
             if(toastLoadingId) { toast.dismiss(toastLoadingId) }
           }
           console.log(error);
