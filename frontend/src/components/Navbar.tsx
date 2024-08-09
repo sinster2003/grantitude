@@ -1,11 +1,6 @@
-const Navbar = () => {
-  const handleGithubLogin = () => {
-    const clientID = import.meta.env.VITE_APP_CLIENT_ID;
-    console.log("Hello", clientID);
-    const redirectURI = import.meta.env.VITE_APP_REDIRECT_URI;
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}`;
-  };
+import handleGithubLogin from "../utils/handleGithubLogin"
 
+const Navbar = () => {
   return (
     <div className='w-full h-20 bg-black pl-40 pr-40 pt-10 pb-5 flex items-center justify-between'>
       <img width="50" height="50" src="/logo.png" alt="pull-request"/>

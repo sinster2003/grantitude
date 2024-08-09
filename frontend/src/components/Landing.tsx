@@ -3,6 +3,7 @@ import { Button } from "./ui/moving-border";
 import { SparklesCore } from "./ui/sparkles";
 import { ContainerScroll } from "./ui/container-scroll-animation";
 import Footer from "./Footer";
+import handleGithubLogin from "../utils/handleGithubLogin";
 
 const Landing = () => {
   return (
@@ -62,6 +63,7 @@ const Landing = () => {
       <div className="mt-6"><Button 
     borderRadius="1.75rem"
     className="bg-white dark:bg-transparent text-black dark:text-white border-neutral-200 dark:border-slate-800"
+    onClick={handleGithubLogin}
   >
     Login to Github
   </Button> 
