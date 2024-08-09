@@ -23,6 +23,7 @@ const fetchRepos = async (req: AccessRequest, res: Response) => {
         console.log(error);
         res.status(500).json({
             message: "Something went wrong",
+            error
         });
     }
 };
