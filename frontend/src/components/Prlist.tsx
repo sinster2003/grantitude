@@ -32,7 +32,7 @@ const Prlist = () => {
     <div className="flex flex-wrap gap-20 justify-center">
         {prs?.length > 0 && prs?.map((pr: any) => <div key={pr.id}>
             <Prcards username={pr.user.login} bio={pr.author_association.toLowerCase()
-} userImg={pr.user.avatar_url}/>
+} userImg={pr.user.avatar_url} prUrl={pr.html_url} number={pr.number}/>
         </div>)}
     </div>
   )

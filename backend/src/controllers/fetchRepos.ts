@@ -6,7 +6,7 @@ const fetchRepos = async (req: AccessRequest, res: Response) => {
     const access_token = req.access_token;
 
     try {
-        const reposResult = await axios.get("https://api.github.com/user/repos", {
+        const reposResult = await axios.get("https://api.github.com/user/repos?visibility=all&&sort=created", {
             headers: {
                 Authorization: `Bearer ${access_token}`,
                 Accept: "application/json",

@@ -7,7 +7,7 @@ const fetchPrs = async (req: AccessRequest, res: Response) => {
     const access_token = req.access_token;
 
     try {
-        const response = await axios.get(`https://api.github.com/repos/${owner}/${name}/pulls`, {
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${name}/pulls?state=all`, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
                 Accept: "application/json",

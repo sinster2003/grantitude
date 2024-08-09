@@ -18,8 +18,9 @@ import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
+const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, bio: string, userImg: string, number: number, prUrl: string }) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
   const [inputValue, setInputValue] = useState("");
 
@@ -96,8 +97,9 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
 
   return (
     <div className="flex flex-col py-20 items-center justify-center antialiased">
+      <Link to={prUrl} target='_blank'>
       <GlowingStarsBackgroundCard className='min-w-[480px]'>
-        <GlowingStarsTitle>{username}</GlowingStarsTitle>
+        <GlowingStarsTitle>{`${username} #${number}`}</GlowingStarsTitle>
         <div className="flex justify-between items-center">
           <GlowingStarsDescription>
             {bio}
@@ -105,6 +107,7 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
           <img src={userImg} alt={username} className='rounded-full w-10 h-10'/>
         </div>
       </GlowingStarsBackgroundCard>
+      </Link>
       <div className="py-4 flex items-center justify-center">
       <Modal>
         <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
