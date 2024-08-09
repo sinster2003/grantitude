@@ -1,6 +1,6 @@
 import React from 'react'
-import { ethers } from "ethers";
-import { BrowserProvider, parseUnits } from "ethers";
+import { ethers, parseEther } from "ethers";
+import { BrowserProvider } from "ethers";
 import abi from "../../Bounty.json"
 import {
     GlowingStarsBackgroundCard,
@@ -20,20 +20,34 @@ import {
 
 const Prcards = ({ username, bio, userImg }: { username: string, bio: string, userImg: string }) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
-  
+  const [inputValue, setInputValue] = useState("");
+
   async function makeTransaction(){
+    //@ts-ignore
     if(!window.ethereum){
       console.log("Wallet not connected, please install metamask");
+    }
+    else{
+      try {
+        //@ts-ignore
+        const provider = new BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const bountyContract = new ethers.Contract(import.meta.env.VITE_APP_CONTRACT_ADDRESS_DEPLOYED, abi.abi, signer);
+        const data = await bountyContract.owner()
+        console.log(data)
+
+        const tx = await bountyContract.awardBounty(data, {
+          value: parseEther(inputValue)
+        })
+        await tx.wait();
+        console.log("Transaction added");
+      }
+      catch(error) {
+        console.log(error);
+      }
+    }
   }
-  else{
-    
-    const provider = new BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const bountyContract = new ethers.Contract(process.env.CONTRACT_ADDRESS_DEPLOYED, abi.abi, provider);
-    const data = await bountyContract.owner()
-    console.log(data)
-  }
-}
+
   async function connectWallet(){
     //check whether metamask exists
     //@ts-ignore
@@ -64,8 +78,9 @@ const Prcards = ({ username, bio, userImg }: { username: string, bio: string, us
       ];
 
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
+        setInputValue(e.target.value);
       };
+
       const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("submitted");
