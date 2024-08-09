@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Prcards from "./Prcards";
 import SortButton from "./ui/SortButton";
+import toast from "react-hot-toast";
 
 const Prlist = () => {
   const { owner, name } = useParams();
   const [prs, setPrs] = useState([]);
   const [filteredPrs, setFilteredPrs] = useState(prs);
+  const [buttonStatus, setButtonStatus] = useState("All");
   
   useEffect(() => {
     const getPrs = async () => {
@@ -22,14 +24,13 @@ const Prlist = () => {
             setFilteredPrs(result.prs);
         }
         catch(error) {
+            toast.error("Something went wrong")
             console.log(error);
         }
     }
 
     getPrs();
   }, []);
-
-  console.log(prs);
 
   if(!prs || prs?.length <= 0) {
     return <div className="flex w-full h-screen justify-center items-center">
@@ -46,14 +47,23 @@ const Prlist = () => {
         <div className="flex gap-5 justify-center pb-10">
             <SortButton onClick={() => {
                 prs?.length > 0 && setFilteredPrs(prs.filter((pr: any) => pr.merged_at !== null));
-            }} name="Merged"/>
+                setButtonStatus("Merged");
+            }} name="Merged" buttonStatus={buttonStatus} />
+
             <SortButton onClick={() => {
                 prs?.length > 0 && setFilteredPrs(prs.filter((pr: any) => pr.closed_at !== null));
-            }} name="Closed"/> 
+                setButtonStatus("Closed");
+            }} name="Closed" buttonStatus={buttonStatus} />
+
             <SortButton onClick={() => {
                 prs?.length > 0 && setFilteredPrs(prs.filter((pr: any) => pr.closed_at === null));
-            }} name="Open"/>
-            <SortButton onClick={() => { setFilteredPrs(prs) }} name="All"/>
+                setButtonStatus("Open");    
+            }} name="Open" buttonStatus={buttonStatus} />
+            
+            <SortButton onClick={() => { 
+                setFilteredPrs(prs);
+                setButtonStatus("All");    
+            }} name="All" buttonStatus={buttonStatus} />
         </div>
         
         <div className="flex flex-wrap gap-20 justify-center">

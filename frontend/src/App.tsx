@@ -1,14 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
+import { Toaster } from 'react-hot-toast';
 import { Dashboard, Landing, Layout, Repositories } from './components'
 import Prlist from './components/Prlist'
-import { useAuth } from './components/Layout';
 import Component404 from './components/Component404';
 
 function App() {
-  const auth = useAuth();
-  {console.log("Auth", auth?.authStatus)}
-
   return (
     <>
       <Layout>
@@ -21,6 +17,7 @@ function App() {
           </Routes>
       </BrowserRouter>
       </Layout>
+      <Toaster/>
     </>
   )
 }

@@ -19,52 +19,56 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, bio: string, userImg: string, number: number, prUrl: string }) => {
   const [currentWalletAddress, setCurrentWalletAddress] = useState("Not connected to any account")
   const [inputValue, setInputValue] = useState("");
+  let toastLoadingId: string | null = null;
 
   async function makeTransaction()
   { // input validations
-    if(Number(inputValue) === NaN){
-      console.log("Invalid bounty value, its should be in ETH.(Eg:0.01)")
+    if(Number.isNaN(Number(inputValue))){
+      toast.error("Invalid bounty value, its should be in ETH.(Eg:0.01)")
     }
     else{
       //@ts-ignore
-    if(!window.ethereum){
-      console.log("Wallet not connected, please install metamask");
-    }
-    else{
-      try {
-        //@ts-ignore
-        const provider = new BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const bountyContract = new ethers.Contract(import.meta.env.VITE_APP_CONTRACT_ADDRESS_DEPLOYED, abi.abi, signer);
-        const contributorAddress = await axios.get(`http://localhost:8080/api/github/users/${username}`, {
-          headers: {
-            Authorization: JSON.parse(localStorage.getItem("token") as string)
-          }
-        });
+      if(!window.ethereum){
+        toast.error("Wallet not connected, please install metamask");
+      }
+      else{
+        try {
+          toastLoadingId = toast.loading("Transaction under process! Do not press refresh or back button!")
+          //@ts-ignore
+          const provider = new BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const bountyContract = new ethers.Contract(import.meta.env.VITE_APP_CONTRACT_ADDRESS_DEPLOYED, abi.abi, signer);
+          const contributorAddress = await axios.get(`http://localhost:8080/api/github/users/${username}`, {
+            headers: {
+              Authorization: JSON.parse(localStorage.getItem("token") as string)
+            }
+          });
 
-        const balance = await window.ethereum.request({
-          method:"eth_getBalance"
-        })
-
-        if(parseEther(balance) < parseEther(inputValue)){
-          console.log("Insufficient funds, change account and try again")
-        }
-        else{
           const tx = await bountyContract.awardBounty(contributorAddress.data, {
             value: parseEther(inputValue)
-          })
+          });
           await tx.wait();
-          console.log("Transaction added");
-        }        
+          if(toastLoadingId) { toast.dismiss(toastLoadingId) }
+          toast.success(`Transaction successful! Bounty sent to ${username}`);       
+        }
+        catch(error) {
+          //@ts-ignore
+          if(error.code === "INSUFFICIENT_FUNDS") {
+            toast.error("INSUFFICIENT_FUNDS in your metamask wallet!")
+            if(toastLoadingId) { toast.dismiss(toastLoadingId) }
+          }
+          else {
+            toast.error("Something went wrong")
+            if(toastLoadingId) { toast.dismiss(toastLoadingId) }
+          }
+          console.log(error);
+        }
       }
-      catch(error) {
-        console.log(error);
-      }
-    }
     }    
   }
 
@@ -72,20 +76,20 @@ const Prcards = ({ username, bio, userImg, number, prUrl }: { username: string, 
     //check whether metamask exists
     //@ts-ignore
     if(window.ethereum){
-      console.log("Meta mask detected")
+      toast.success("Meta mask detected")
       try{
         //@ts-ignore
         const accounts = await window.ethereum.request({
           method:"eth_requestAccounts"
         })
-        console.log(accounts)
         setCurrentWalletAddress(accounts[0])
       }catch(error){
-        console.log(error)
+        toast.error("Metamask could not be requested!");
+        console.log(error);
       }
     }
     else{
-      console.log("Metamask wallet not found")
+      toast.error("Metamask wallet not found")
     }
   }
   

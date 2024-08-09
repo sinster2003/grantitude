@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Meteors } from "./ui/meteors";
 import { Pagination, PaginationContent } from "./ui/pagination";
 import { Button } from "./ui/button";
+import toast from "react-hot-toast";
 
 const Repositories = () => {
   const [repos, setRepos] = useState([]);
@@ -27,6 +28,7 @@ const Repositories = () => {
             navigation("/dashboard");
         }
         catch(error) {
+            toast.error("Repositories not able to be fetched");
             console.log(error);
         }
     }
@@ -55,6 +57,10 @@ const Repositories = () => {
 
   return (
     <div>
+        <div className="fixed top-10 right-10 z-50 rounded-full">
+            {/*@ts-ignore*/}
+            <img src={repos?.[0]?.owner?.avatar_url} width="40px" height="40px" className="rounded-full"/>
+        </div>
         <div className="flex flex-col gap-10 pt-[60px] px-10 pb-10">
             <h1 className="text-2xl text-center">Repositories</h1>
         </div>

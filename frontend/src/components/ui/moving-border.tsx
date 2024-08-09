@@ -18,6 +18,7 @@ export function Button({
   borderClassName,
   duration,
   className,
+  movingBg,
   ...otherProps
 }: {
   borderRadius?: string;
@@ -27,6 +28,7 @@ export function Button({
   borderClassName?: string;
   duration?: number;
   className?: string;
+  movingBg?: string;
   [key: string]: any;
 }) {
   return (
@@ -44,10 +46,10 @@ export function Button({
         className="absolute inset-0"
         style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
       >
-        <MovingBorder duration={duration} rx="30%" ry="30%">
+        <MovingBorder duration={duration} rx="30%" ry="30%" movingBg={movingBg}>
           <div
             className={cn(
-              "h-20 w-20 opacity-[0.8] bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)]",
+              `h-20 w-20 opacity-[0.8] ${movingBg ? "bg-purple-700" : "bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)]"}`,
               borderClassName
             )}
           />
@@ -74,12 +76,14 @@ export const MovingBorder = ({
   duration = 2000,
   rx,
   ry,
+  movingBg,
   ...otherProps
 }: {
   children: React.ReactNode;
   duration?: number;
   rx?: string;
   ry?: string;
+  movingBg?: string;
   [key: string]: any;
 }) => {
   const pathRef = useRef<any>();

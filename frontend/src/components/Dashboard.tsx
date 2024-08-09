@@ -3,6 +3,7 @@ import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar"
 import { Folders, HomeIcon, SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
 import { useAuth } from "./Layout";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const links = [
   {
@@ -24,11 +25,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const code = params.get("code");
   const auth = useAuth();
   const navigation = useNavigate();
-  console.log(auth);
 
   useEffect(() => {
     if(!code && !auth?.authStatus) {
-      console.log("Please login to access the dashboard")
+      toast.error("Please login to access the dashboard")
       navigation("/");
     }
 
@@ -49,8 +49,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         setAuthStatus(result?.message?.split(" ")[1]);
         localStorage.setItem("token", JSON.stringify(result.token));
         auth?.setAuthStatus(result.token);
+        toast.success("Congratulations, successfully logged in!");
       } 
       catch (error) {
+        toast.error("Something went wrong");
         console.log(error);
       }
     };
@@ -67,7 +69,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   }
 
   if(code && authStatus === "Failure") {
-    return <p>Auth Failed</p>
+    toast.error("Authentication failed");
+    localStorage.setItem("token", "");
+    auth?.setAuthStatus(null);
+    navigation("/");
   }
 
   if((code && authStatus === "Successful") || (!code && auth?.authStatus)) {
