@@ -54,7 +54,9 @@ const Repositories = () => {
     if(pageNo === 111) {
         setFilteredRepos(repos);
     }
-    setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
+    else {
+        setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
+    }
   }
 
   if(length !== null && length === 0) {
