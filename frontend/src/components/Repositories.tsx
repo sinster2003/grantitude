@@ -41,6 +41,9 @@ const Repositories = () => {
   useEffect(() => {
     const pages = [];
     for(let i = 1; i <= Math.ceil(repos?.length / 6); i++) {
+        if(i > 5) {
+            break;
+        }
         pages.push(i);
     }
     setPagination(pages);
@@ -48,6 +51,9 @@ const Repositories = () => {
 
   const handlePagination = (pageNo: number) => {
     setPageNo(pageNo);
+    if(pageNo === 111) {
+        setFilteredRepos(repos);
+    }
     setFilteredRepos(repos?.slice((pageNo - 1) * 6, (pageNo - 1) * 6 + 6));
   }
 
@@ -81,6 +87,7 @@ const Repositories = () => {
                 <PaginationContent>
                     <div className="flex flex-wrap gap-4">
                         {pagination?.map((page: number) => <Button key={page} className={`text-neutral-900 gap-5 hover:bg-gray-400 cursor-pointer ${ page === pageNo ? "bg-gray-400" : "bg-white" }`} onClick={() => {handlePagination(page)}}>{page}</Button>)}
+                        <Button className={`text-neutral-900 gap-5 hover:bg-gray-400 cursor-pointer ${ 111 === pageNo ? "bg-gray-400" : "bg-white" }`} onClick={() => {handlePagination(111)}}>All</Button>
                     </div>
                 </PaginationContent>
             </Pagination>
